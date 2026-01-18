@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-5 p-4 shadow-lg rounded" style="background-color: #fff; border-top: 5px solid #bb1919;">
+        <h2 class="text-center mb-4" style="font-weight: 700; color: #bb1919;">Login</h2>
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                <label for="username" class="form-label fw-bold">Username</label>
+                {{ form.username(class="form-control form-control-lg rounded-pill {% if form.username.errors %}is-invalid{% endif %}") }}
+                {% if form.username.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.username.errors %}
+                            <p class="mb-0">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label fw-bold">Password</label>
+                {{ form.password(class="form-control form-control-lg rounded-pill {% if form.password.errors %}is-invalid{% endif %}") }}
+                {% if form.password.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.password.errors %}
+                            <p class="mb-0">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-bbc rounded-pill px-5 py-2">Login</button>
+            </div>
+        </form>
+
+        <p class="text-center mt-3" style="font-size: 0.9rem;">
+            Don’t have an account? <a href="{{ url_for('register') }}" style="color: #bb1919; text-decoration: none;">Register here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
