@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret123'
+app.config['SECRET_KEY'] = 'asamitaka'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db.init_app(app)
