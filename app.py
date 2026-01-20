@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from models import db, User, News, Comment
 from forms import LoginForm, RegisterForm, NewsForm, CommentForm
@@ -89,7 +89,7 @@ def news_detail(news_id):
         )
         db.session.add(comment)
         db.session.commit()
-        flash("Comment added successfully!")
+        
 
     return render_template('news_details.html', news=news, form=form)
 
@@ -98,7 +98,6 @@ def news_detail(news_id):
 @login_required
 def add_news():
     if not current_user.is_admin:
-        flash("You do not have permission to add news.")
         return redirect(url_for('index'))
 
     form = NewsForm()
@@ -106,7 +105,6 @@ def add_news():
         file = form.image.data
 
         if not file:
-            flash("Please upload an image.")
             return render_template('addnews.html', form=form)
 
         filename = secure_filename(file.filename)
@@ -122,7 +120,6 @@ def add_news():
         )
         db.session.add(news)
         db.session.commit()
-        flash("News added successfully!")
         return redirect(url_for('index'))
 
     return render_template('addnews.html', form=form)
@@ -137,7 +134,6 @@ def delete_news(news_id):
     news = News.query.get_or_404(news_id)
     db.session.delete(news)
     db.session.commit()
-    flash("News deleted successfully!")
     return redirect(url_for('index'))
 
 
@@ -149,7 +145,6 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user)
             return redirect(url_for('index'))
-        flash("Invalid credentials")
     return render_template('login.html', form=form)
 
 
@@ -158,7 +153,6 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         if User.query.filter_by(username=form.username.data).first():
-            flash("Username already exists")
             return redirect(url_for('register'))
 
         username = form.username.data
@@ -171,7 +165,6 @@ def register():
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        flash("Registration successful!")
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
@@ -180,7 +173,6 @@ def register():
 @login_required
 def logout():
     logout_user()
-    flash("Logged out successfully!")
     return redirect(url_for('index'))
 
 
